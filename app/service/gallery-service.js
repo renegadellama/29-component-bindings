@@ -4,15 +4,15 @@ module.exports = [
   '$q',
   '$log',
   '$http',
-  'authservice',
-  function($q, $log, $http, authservice) {
+  'authService',
+  function($q, $log, $http, authService) {
     $log.debug(' Gallery service');
 
     let service = {};
     service.galleries = [];
 
     service.createGallery = (gallery) => {
-      $log.debug('service.createGallery');
+      $log.debug('#service.createGallery');
       return authService.getToken()
       .then(token => {
         let config = {
@@ -38,7 +38,7 @@ module.exports = [
 
     service.fetchGalleries = () => {
       $log.debug('#service.fetchGalleries');
-      return authservice.getToken()
+      return authService.getToken()
       .then(token => {
         let config = {
           headers: {
@@ -71,7 +71,7 @@ module.exports = [
             Accept: 'application/json',
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
-          }
+          },
         };
         return $http.put(url, gallery, config);
       })
@@ -86,6 +86,32 @@ module.exports = [
         return $q.reject(err);
       });
     };
+
+    service.deleteGallery = (galleryId) => {
+      return authService.getToken()
+      .then(token => {
+        let url = `${__API_URL__}/api/gallery/${galleryId}`;
+        let config = {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        return $http.delete(url, config);
+      })
+      .then(res => {
+        service.galleries.filter((ele, idx) => {
+          if(ele._id === galleryId) service.galleries.splice(idx, 1);
+        });
+        return res;
+      })
+      .catch(err => {
+        $log.error(err.message);
+        return $q.reject(err);
+      });
+    };
     return service;
+
   }
 ];

@@ -20,7 +20,14 @@ module.exports = ['$stateProvider', '$urlServiceProvider', function($stateProvid
       template: require('../view/landing/landing.html'),
       controller: 'LandingController',
       controllerAs: 'landingCtrl'
-    }
+    },
+    // {
+    //   name: 'gallery',
+    //   url: '/gallery',
+    //   template: require('../view/gallery/gallery-item.html'),
+    //   controller: 'GalleryController',
+    //   controllerAs: 'galleryCtrl'
+    // }
   ];
 
   routes.forEach($stateProvider.state);

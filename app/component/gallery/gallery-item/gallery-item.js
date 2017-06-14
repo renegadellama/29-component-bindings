@@ -1,5 +1,7 @@
 'use strict';
 
+// require('./_gallery-item.scss');
+
 module.exports = {
   template: require('./gallery-item.html'),
   controllerAs: 'galleryItemCtrl',
@@ -8,8 +10,15 @@ module.exports = {
 
     this.showEditGallery = false;
 
+    this.deleteGallery = () => {
+      galleryService.deleteGallery(this.gallery._id, this.gallery)
+      .then(
+        (res) => $log.log(`${res.status}, delete successfully`),
+        err => $log.error(err)
+      );
+    };
   }],
   bindings: {
-    gallery: '<'
-  }
+    gallery: '<',
+  },
 };
